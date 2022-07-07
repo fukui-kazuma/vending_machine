@@ -18,6 +18,8 @@ class CreateSalesTable extends Migration
                 $table->bigIncrements('id');
                 $table->bigInteger('product_id');
                 $table->timestamps();
+                // 外部キー
+                $table->foreign('product_id')->references('id')->on('products')->onDelete('cascade');
             });
         }
     }

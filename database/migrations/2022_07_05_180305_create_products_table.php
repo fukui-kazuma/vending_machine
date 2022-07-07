@@ -23,7 +23,8 @@ class CreateProductsTable extends Migration
                 $table->text('comment');
                 $table->string('img_path');
                 $table->timestamps();
-                $table->foreign('company_id')->references('id')->on('company');
+                // 外部キー
+                $table->foreign('company_id')->references('id')->on('companies')->onDelete('cascade');
             });
         }
     }
