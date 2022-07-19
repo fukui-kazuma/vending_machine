@@ -14,7 +14,7 @@
                         </div>
                     @endif
 
-                    You are logged in!
+                    <a href="{{ route('product.display') }}" >You are logged in!
                 </div>
             </div>
         </div>
