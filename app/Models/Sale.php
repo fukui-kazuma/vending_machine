@@ -15,7 +15,7 @@ class Sale extends Model
         'product_id',
     ];
 
-    public function product() {
+    public function products() {
         return $this->belongsTo('App\Models\product');
     }
 }

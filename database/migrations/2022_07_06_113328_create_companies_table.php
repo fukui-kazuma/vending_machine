@@ -11,8 +11,7 @@ class CreateCompaniesTable extends Migration
      *
      * @return void
      */
-    public function up()
-    {
+    public function up() {
         if(!Schema::hasTable('companies')) {
             Schema::create('companies', function (Blueprint $table) {
                 $table->bigIncrements('id');
@@ -29,8 +28,7 @@ class CreateCompaniesTable extends Migration
      *
      * @return void
      */
-    public function down()
-    {
+    public function down() {
         Schema::dropIfExists('companies');
     }
 }

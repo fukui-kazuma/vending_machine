@@ -1,0 +1,34 @@
+@extends('layouts.common')
+@section('title', '商品詳細')
+@section('list_display')
+<div class="container">
+    <div class="row">
+        <div class="col-md-8 col-md-offset-2">
+            <span>商品ID： {{ $product->id }}</span>
+            <br>
+            <span>商品画像：
+                @if($product->img_path === null)
+                    <img src="/storage/noimage.png">
+                @else
+                    <img src="{{ asset( 'storage'.$product->img_path) }}">
+                @endif
+            </span>
+            <br>
+            <span>商品名：{{ $product->product_name }}</span>
+            <br>
+            <span>メーカー：{{ $product->company_name }}</span>
+            <br>
+            <span>価格：{{ $product->price }}</span>
+            <br>
+            <span>在庫：{{ $product->stock }}</span>
+            <br>
+            <span>コメント：{{ $product->comment }}</span>
+        </div>
+    </div>
+    <div class="mt-5">
+        <button type="button" class="btn btn-primary" onclick="location.href='/product/edit/{{ $product->id }}'">
+            編集
+        </button>
+    </div>
+</div>
+@endsection
