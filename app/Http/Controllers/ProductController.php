@@ -25,22 +25,14 @@ class ProductController extends Controller
      */
     public function showDisplay(Request $request) {
         $product_instance = new Product;
-        $company_instance = new Company;
+        $company_data = Company::all();
         $keyword = $request->input('keyword');
-        $select_name = $request->input('company_id');
-        try {
-            $product_list = $product_instance->productList();
-            $company_data = $company_instance->companyList();
-            if(!empty($keyword)) {
-            $product_list = $product_instance->searchKeyword($keyword);
-            }
-            if(!empty($select_name)){
-            $product_list = $product_instance->searchCompanyName($select_name);
-            }
-        } catch (\Throwaable $e) {
-            throw new \Exception($e->getMessage());
-        }
-        return view('product.list_display', compact('product_list', 'company_data', 'keyword'));
+        $company_id = $request->input('company_id');
+
+        // 商品取得処理
+        $product_list = $product_instance->getList($keyword, $company_id);
+
+        return view('product.list_display', compact('product_list', 'company_data', 'keyword', 'company_id'));
     }
 
     /**
@@ -48,17 +40,19 @@ class ProductController extends Controller
      * @param $id
      * @return $view
      */
-    public function showDetail($id){
+    public function showDetail($id) {
         $product_instance = new Product;
-            $product = $product_instance->productDetail($id);
-            try{
-            if(is_null($product)) {
+        $product = $product_instance->productDetail($id);
+
+        try {
+            if (is_null($product)) {
                 \Session::flash('err_msg','データがありません。');
                 return redirect(route('product.list_display'));
             }
-        }catch(\Throwable $e) {
+        } catch (\Throwable $e) {
             throw new \Exception($e->getMessage());
         }
+
         return view('product.detail', compact('product'));
     }
     
@@ -67,13 +61,9 @@ class ProductController extends Controller
      * 
      * @return view
      */
-    public function showCreate(){
-        $company_instance = new Company;
-        try{
-            $selectItems=$company_instance->companyList();
-        }catch(\Throwable $e) {
-            throw new \Exception($e->getMessage());
-        }
+    public function showCreate() {
+        $selectItems = Company::all();
+
         return view('product.form', compact('selectItems'));
     }
 
@@ -87,10 +77,8 @@ class ProductController extends Controller
         $img_path = $request->file('img_path');
 
         $path = null;
-        if(!empty($img_path)) {
+        if (!empty($img_path)) {
             $path = $img_path->store('\img', 'public');
-            // $img_path_name = $img_path->getPathname();
-            // $img_path->storeAs('',$img_path_name,'public');
         }
         
         $insert_data = [];
@@ -102,8 +90,7 @@ class ProductController extends Controller
         $insert_data['img_path'] = $path;
 
         \DB::beginTransaction();
-
-        try{
+        try {
             $product_instance->createProduct($insert_data);
             \DB::commit();
         } catch (\Throwable $e) {
@@ -111,6 +98,7 @@ class ProductController extends Controller
             throw new \Exception($e->getMessage());
         }
         \Session::flash('err_msg','商品を登録しました。');
+
         return redirect(route('product.display'));
     }
     
@@ -122,16 +110,18 @@ class ProductController extends Controller
     public function showEdit($id) {
         $product_instance = new Product;
         $company_instance = new Company;
-        try{
+
+        try {
             $product = $product_instance->productDetail($id);
             $company_display = $company_instance->companyList();
-            if(is_null($product)) {
+            if (is_null($product)) {
                 \Session::flash('err_msg','該当するものがありません。');
                 return redirect(route('product.list_display'));
             }
-        }catch(\Throwable $e) {
+        } catch (\Throwable $e) {
             throw new \Exception($e->getMessage());
         }
+
         return view('product.edit', compact('product', 'company_display'));
     }
 
@@ -145,7 +135,7 @@ class ProductController extends Controller
         $img_path = $request->file('img_path');
 
         $path = null;
-        if(!empty($img_path)) {
+        if (!empty($img_path)) {
             $path = $img_path->store('\img', 'public');
         }
         $update_date = [];
@@ -158,14 +148,15 @@ class ProductController extends Controller
         $update_date['img_path'] = $path;
 
         \DB::beginTransaction();
-        try{
+        try {
             $product_instance->updateProduct($update_date);
             \DB::commit();
-        }catch(\Throwable $e){
+        } catch (\Throwable $e) {
             \DB::rollback();
-            throw new \Excepetion($e-getMessage());
+            throw new \Exception($e->getMessage());
         }
         \Session::flash('err_msg','商品情報を更新しました。');
+
         return redirect(route('product.display'));
     }
     
@@ -175,16 +166,21 @@ class ProductController extends Controller
      */
     public function exeDelete($id) {
         $product_instance = new Product;
-        if(empty($id)) {
+        if (empty($id)) {
             \Session::flash('err_msg','該当データはありません');
             return redirect(route('product_display'));
         }
-        try{
+
+        \DB::beginTransaction();
+        try {
             $product_instance->deleteProduct($id);
-        }catch (\Throwable $e) {
+            \DB::commit();
+        } catch (\Throwable $e) {
             throw new \Exception($e->getMessage());
+            \DB::rollback();
         }
         \Session::flash('err_msg', '削除しました');
+
         return redirect(route('product.display'));
     }
 }

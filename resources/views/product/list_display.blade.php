@@ -7,34 +7,30 @@
             <h2>商品一覧</h2>
             <div class="form-group mt-3">
                 <form method="GET" action="{{ route('product.display') }}" id="searchForm" class="form-inline my-2 my-lg-0">
-                <div class="search-form">
-                    <input 
-                    type = "text"
-                    class = "form-control mr-sm-2"
-                    name = "keyword"
-                    placeholder = "キーワードを入力"
-                    value = "{{ $keyword }}">
-                </div>
-                
-                <div class="search_company-name">
-                    <select name="company_id">
-                        <option selected="select_name" value="">メーカーを選択してください</option>
-                        @foreach ($company_data as $company_list)
-                            <option
-                            id="company_id"
-                            name="company_id"
-                            value="{{ $company_list->id }}">
-                            {{ $company_list->company_name }}</option>
-                        @endforeach
-                    </select>
-                </div>
-                <div class ="search-btn ml-2">
-                    <button class="btn btn-secondary" type="submit">検索</button>
-                </div>
-            </form>
-        </div>
+                    <div class="search-form">
+                        <input type="text" class="form-control mr-sm-2" name="keyword"
+                        placeholder="キーワードを入力" value="{{ $keyword }}">
+                    </div>
+                    
+                    <div class="search_company-name">
+                        <select name="company_id">
+                            <option selected="select_name" value="" class="select_placeholder" >メーカーを選択してください</option>
+                            @foreach ($company_data as $company_list)
+                            @if ($company_id == $company_list->id)
+                            <option value="{{ $company_list->id }}" selected>{{ $company_list->company_name }}</option>
+                            @else
+                            <option value="{{ $company_list->id }}">{{ $company_list->company_name }}</option>
+                            @endif
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class ="search-btn ml-2">
+                        <button class="btn btn-secondary" type="submit">検索</button>
+                    </div>
+                </form>
+            </div>
             @if (session('err_msg'))
-                <p class ="text-danger">{{ session('err_msg') }}</p>
+            <p class ="text-danger">{{ session('err_msg') }}</p>
             @endif
 
             <table class="table table-striped">
@@ -75,7 +71,6 @@
                         </td>
                     </form>
                 </tr>
-
                 @endforeach
             </table>
         </div>

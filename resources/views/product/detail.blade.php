@@ -8,9 +8,9 @@
             <br>
             <span>商品画像：
                 @if($product->img_path === null)
-                    <img src="/storage/noimage.png">
+                    <img class="w-25"src="/storage/noimage.png">
                 @else
-                    <img src="{{ asset( 'storage'.$product->img_path) }}">
+                    <img class="w-25"src="{{ asset( 'storage'.$product->img_path) }}">
                 @endif
             </span>
             <br>

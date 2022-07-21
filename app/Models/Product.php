@@ -49,7 +49,7 @@ class Product extends Model
 
     public function searchKeyword($param) {
         $products = DB::table('products')
-        ->join('companies','products.company_id','=','companies.id')
+        ->join('companies','products.company_id', '=','companies.id')
         ->select(
             'products.id',
             'products.img_path',
@@ -151,8 +151,31 @@ class Product extends Model
      * 商品情報削除
      * @param $id
      */
-    public function deleteProduct($id){
+    public function deleteProduct($id) {
         DB::table('products')->delete($id);
+    }
+
+    public function getList($keyword,$company_id) {
+        $products = DB::table('products')
+        ->join('companies','products.company_id','=','companies.id')
+        ->select(
+            'products.id',
+            'products.img_path',
+            'products.product_name',
+            'products.price',
+            'products.stock',
+            'products.comment',
+            'companies.company_name',
+        )
+        ->orderBy('products.id', 'asc');
+
+        if (!empty($keyword)) {
+            $products->where('products.product_name','LIKE', '%'.$keyword.'%');
+        }
+        if (!empty($company_id)) {
+            $products->where('products.company_id', $company_id);
+        }
+        return $products->get();
     }
 
 }

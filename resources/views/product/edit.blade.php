@@ -13,10 +13,7 @@
                 </label>
                 <select name="company_id">
                     @foreach ($company_display as $company_data)
-                    <option
-                        id="company_id"
-                        name="company_id"
-                        value="{{ $company_data->id }}"
+                    <option id="company_id" name="company_id" value="{{ $company_data->id }}"
                         @if( $company_data->id == $product->company_id )
                             selected
                         @endif
@@ -35,12 +32,8 @@
                 <label for="product_name">
                     商品名
                 </label>
-                <input
-                    name="product_name"
-                    class="form-control"
-                    value="{{ $product->product_name }}"
-                    type="text"
-                >
+                <input name="product_name" class="form-control"
+                    value="{{ $product->product_name }}" type="text">
                 @if ($errors->has('product_name'))
                     <div class="text-danger">
                         {{ $errors->first('product_name') }}
@@ -52,12 +45,7 @@
                 <label for="price">
                     価格
                 </label>
-                <input
-                    name="price"
-                    class="form-control"
-                    value="{{ $product->price }}"
-                    type="text"
-                >
+                <input name="price" class="form-control" value="{{ $product->price }}" type="text">
                 @if ($errors->has('price'))
                     <div class="text-danger">
                         {{ $errors->first('price') }}
@@ -69,12 +57,7 @@
                 <label for="stock">
                     在庫
                 </label>
-                <input
-                    name="stock"
-                    class="form-control"
-                    value="{{ $product->stock }}"
-                    type="text"
-                >
+                <input name="stock" class="form-control" value="{{ $product->stock }}" type="text">
                 @if ($errors->has('stock'))
                 <div class="text-danger">
                     {{ $errors->first('stock') }}
@@ -86,10 +69,7 @@
                 <label for="comment">
                     コメント
                 </label>
-                <textarea
-                    name="comment"
-                    class="form-control"
-                    rows="4" 
+                <textarea name="comment" class="form-control" rows="4" 
                 >{{ $product->comment }}</textarea>
                 @if ($errors->has('comment'))
                 <div class="text-danger">
@@ -99,19 +79,16 @@
             </div> 
 
             <div class="form-group">
-                <label for="img_path">s
+                <label for="img_path">
                     画像
                 </label>
                     @if ($product->img_path === null)
-                        <img src="/storage/noimage.png">
+                        <img class="w-25 h-25"src="/storage/noimage.png">
                     @else
-                        <img src="{{ asset( '/storage'.$product->img_path) }}">
+                        <img class="w-25 h-25"src="{{ asset( '/storage'.$product->img_path) }}">
                     @endif
-                <input 
-                type="file" 
-                name="img_path" 
-                class="form-control-file">
-                </div>
+                <input type="file" name="img_path" class="form-control-file mt-2">
+            </div>
             <div class="mt-5 mb-5">
                 <button type="button" class="btn btn-out-secondary" onclick="history.back()">
                     戻る 

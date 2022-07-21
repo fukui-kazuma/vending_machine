@@ -11,13 +11,9 @@
                     メーカー名
                 </label>
                 <select name="company_id">
-                    <option selected="selected"
-                    value="">メーカー名を選択してください</option>
+                    <option selected="selected" value=""   class="{{old('select_placeholder')}}">メーカー名を選択してください</option>
                     @foreach ($selectItems as $selectItem)
-                    <option
-                        id="company_id"
-                        name="company_id"
-                        value="{{ $selectItem->id }}">
+                    <option id="company_id" name="company_id" value="{{ $selectItem->id }}">
                         {{ $selectItem->company_name }}</option>
                     @endforeach
                 </select>
@@ -33,12 +29,7 @@
                 <label for="product_name">
                     商品名
                 </label>
-                <input
-                    name="product_name"
-                    class="form-control"
-                    value="{{ old('product_name') }}"
-                    type="text"
-                >
+                <input name="product_name" class="form-control" value="{{ old('product_name') }}" type="text">
                 @if ($errors->has('product_name'))
                     <div class="text-danger">
                         {{ $errors->first('product_name') }}
@@ -50,12 +41,7 @@
                 <label for="price">
                     価格
                 </label>
-                <input
-                    name="price"
-                    class="form-control"
-                    value="{{ old('price') }}"
-                    type="text"
-                >
+                <input name="price" class="form-control" value="{{ old('price') }}" type="text">
                 @if ($errors->has('price'))
                     <div class="text-danger">
                         {{ $errors->first('price') }}
@@ -67,12 +53,7 @@
                 <label for="stock">
                     在庫
                 </label>
-                <input
-                    name="stock"
-                    class="form-control"
-                    value="{{ old ('stock') }}"
-                    type="txet"
-                >
+                <input name="stock" class="form-control" value="{{ old ('stock') }}" type="txet">
                 @if ($errors->has('stock'))
                 <div class="text-danger">
                     {{ $errors->first('stock') }}
@@ -84,11 +65,8 @@
                 <label for="comment">
                     コメント
                 </label>
-                <textarea
-                    name="comment"
-                    class="form-control"
-                    rows="4"
-                    >{{ old('comment') }}</textarea>
+                <textarea name="comment" class="form-control" rows="4"
+                >{{ old('comment') }}</textarea>
                 @if ($errors->has('comment'))
                 <div class="text-danger">
                     {{$errors->first('comment') }}
@@ -100,14 +78,11 @@
                 <label for="img_path">
                     画像
                 </label>
-                <input 
-                type="file" 
-                name="img_path" 
-                class="form-control-file">
+                <input type="file" name="img_path" class="form-control-file">
             </div>
 
             <div class="mt-5">
-                <button type="button" class="btn btn-out-secondary" onclick="lication.href='{{ route('product.display') }}'">
+                <button type="button" class="btn btn-out-secondary" onclick="location.href='{{ route('product.display') }}'">
                     戻る 
                 </a>
                 <button type="submit" class="btn btn-primary">
